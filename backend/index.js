@@ -45,8 +45,17 @@ app.use("/api/item",itemRouter)
 app.use("/api/order",orderRouter)
 
 socketHandler(io)
-server.listen(port,()=>{
-    connectDb()
-    console.log(`server started at ${port}`)
-})
+
+// Connect to DB immediately for Serverless environments
+connectDb();
+
+// Only listen to port if running locally (not in Vercel/Serverless environment)
+if (process.env.NODE_ENV !== 'production') {
+    server.listen(port,()=>{
+        console.log(`server started at ${port}`)
+    })
+}
+
+// Export app for Vercel
+export default app;
 
