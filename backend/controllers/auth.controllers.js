@@ -31,8 +31,8 @@ export const signUp = async (req, res) => {
 
     const token = await genToken(user._id);
     res.cookie("token", token, {
-      secure: false, // in production true
-      sameSite: "strict",
+      secure: true, // Always true for Vercel (HTTPS)
+      sameSite: "none", // Required for cross-site (frontend/backend on diff domains)
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
